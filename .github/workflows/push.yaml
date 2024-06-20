@@ -1,0 +1,26 @@
+name: 'Push to Redocly'
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: 'Push files and wait for deployment'
+        uses: redocly/reunite-push-action@v1
+        with:
+          organization: 'lesyk-org'
+          project: 'reunite-push-action-demo'
+          mountPath: '/apis/museum'
+          files: 'museum-api.yaml'
+          domain: 'https://app.bhstage.cloud'
+        env:
+          REDOCLY_AUTHORIZATION: ${{ secrets.REDOCLY_AUTHORIZATION }}
